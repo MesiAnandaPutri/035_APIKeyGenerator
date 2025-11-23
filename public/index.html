@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Akses API</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FF70A6; /* Main Rose Pink */
+            --secondary: #FFD9E8; /* Light Pink for soft elements */
+            --accent-glow: #F9A4C6; 
+            --accent-blue: #A2D2FF; 
+            --bg-start: #FFE4E6; /* Background Soft Pink */
+            --bg-end: #FBE5C5; /* Background Creamy Peach */
+            --card-bg: #FFFFFF;
+            --text-dark: #6B4958; 
+            --input-bg: #FFFBFB; 
+            --shadow-soft: 0 8px 15px rgba(107, 73, 88, 0.15);
+            --shadow-glow: 0 0 15px rgba(255, 112, 166, 0.5); 
+            --shadow-light: 8px 8px 15px #FFD9E8, -8px -8px 15px #FFFFFF;
+        }
+
+        body {
+            margin: 0;
+            height: 100vh;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--bg-start) 0%, var(--bg-end) 100%);
+            animation: gradientBG 25s ease infinite alternate;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            color: var(--text-dark);
+            font-weight: 300;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+
+        /* CARD CONTAINER - The Cutest Box */
+        .container {
+            width: 380px; 
+            background: var(--card-bg); 
+            border-radius: 45px; 
+            padding: 30px; /* Padding card dikurangi */
+            box-shadow: 0 15px 35px rgba(107, 73, 88, 0.3), var(--shadow-light); 
+            text-align: center;
+            position: relative;
+            border: 1px solid var(--secondary); 
+            transition: 0.5s all cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+        }
+        .container:hover {
+            transform: scale(1.02);
+        }
+
+        h1 { 
+            color: var(--primary); 
+            margin-bottom: 5px; 
+            font-weight: 800; 
+            letter-spacing: 1px; 
+            font-size: 1.8em; /* Judul sedikit dirampingkan */
+            text-shadow: 1px 1px 4px var(--secondary);
+        }
+        p.subtitle { 
+            color: var(--text-dark); 
+            font-size: 0.9em; 
+            margin-bottom: 25px; /* Margin dikurangi */
+            font-weight: 500;
+        }
+
+        /* KEY HEADER SECTION - Marshmallow Layer */
+        .key-header-section {
+            background: var(--secondary);
+            border-radius: 25px; /* Lebih ramping */
+            padding: 15px; /* Padding dikurangi */
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1); 
+            margin-bottom: 25px; /* Margin dikurangi */
+            border: 2px solid var(--primary);
+        }
+        .btn-group {
+            display: flex;
+            gap: 8px; /* Jarak antar tombol dikurangi */
+            margin-bottom: 12px; /* Margin dikurangi */
+        }
+        .btn-key-action {
+            flex: 1;
+            padding: 12px; /* Padding tombol dikurangi */
+            border: none;
+            border-radius: 15px; /* Disesuaikan */
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s transform, 0.2s box-shadow;
+            text-transform: uppercase;
+            font-size: 0.75em; /* Font tombol dikurangi */
+            box-shadow: 0 4px 0 0 rgba(0,0,0,0.2), 0 0 8px var(--accent-glow); 
+        }
+        .btn-key-action:active {
+            transform: translateY(4px);
+            box-shadow: none;
+        }
+        .btn-generate {
+            background: linear-gradient(45deg, var(--primary), var(--accent-glow));
+            color: white;
+        }
+        .btn-copy {
+            background: var(--accent-blue);
+            color: var(--text-dark);
+            box-shadow: 0 4px 0 0 rgba(0,0,0,0.2), 0 0 8px var(--accent-blue);
+        }
+        .key-display {
+            background: var(--card-bg); 
+            padding: 10px; /* Padding dikurangi */
+            border-radius: 10px;
+            font-family: monospace;
+            font-size: 0.8em;
+            color: var(--text-dark);
+            word-break: break-all;
+            text-align: left;
+            border: 2px dashed var(--primary); 
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        /* FORM INPUTS - Marshmallow Inset Style */
+        .input-group { 
+            margin-bottom: 10px; /* Margin antar group sangat dikurangi */
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px 18px; /* Padding input dikurangi */
+            border: none; 
+            background: var(--input-bg);
+            border-radius: 20px; 
+            box-sizing: border-box;
+            font-size: 0.85em;
+            color: var(--text-dark);
+            outline: none;
+            box-shadow: inset 2px 2px 5px rgba(0,0,0,0.1), inset -2px -2px 5px var(--card-bg); 
+        }
+        input::placeholder {
+            color: var(--text-dark);
+            opacity: 0.5;
+            font-weight: 300;
+        }
+        input:focus { 
+            box-shadow: inset 1px 1px 3px rgba(0,0,0,0.1), 0 0 0 3px var(--accent-blue);
+        }
+
+        button.btn-link {
+            width: 100%;
+            padding: 16px; /* Padding tombol utama dikurangi */
+            border: none;
+            border-radius: 25px; 
+            background: linear-gradient(45deg, #4cd137, #27ae60);
+            color: white;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.2s transform;
+            margin-top: 15px; 
+            box-shadow: 0 5px 0 0 #27ae60; 
+            text-transform: uppercase;
+            font-size: 1em;
+        }
+        button.btn-link:active {
+            transform: translateY(5px);
+            box-shadow: none;
+        }
+        
+        .status-message {
+            font-size: 0.8em; 
+            color: #27ae60;
+            margin-top: 12px;
+            margin-bottom: 20px; 
+            font-weight: 500;
+            padding: 10px; 
+            background: #e6fff0;
+            border-radius: 15px; 
+            border: 1px solid #c3e6cb;
+        }
+
+        /* ADMIN PANEL BUTTON - Solid and Subtler */
+        .btn-admin-panel {
+            width: 100%;
+            padding: 12px; 
+            border: none;
+            border-radius: 15px;
+            background: #A098A3; 
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 25px; 
+            transition: 0.3s;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+            font-size: 0.9em;
+        }
+        .btn-admin-panel:hover {
+            background: #8C848C;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>API Key Generator & User</h1>
+        <p class="subtitle">Buat dan hubungkan kredensial API Anda</p>
+        
+        <div class="key-header-section">
+            <div class="btn-group">
+                <button class="btn-key-action btn-generate" onclick="generateKey()">1. Generate Key</button>
+                <button class="btn-key-action btn-copy" onclick="copyKey()">Copy to Clipboard</button>
+            </div>
+            <div class="key-display" id="keyDisplay">Klik "1. Generate Key" untuk memulai.</div>
+        </div>
+
+        <div class="input-group">
+            <label for="firstName">First Name</label>
+            <input type="text" id="firstName" placeholder="First Name">
+        </div>
+        <div class="input-group">
+            <label for="lastName">Last Name</label>
+            <input type="text" id="lastName" placeholder="Last Name">
+        </div>
+        <div class="input-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" placeholder="Email Address">
+        </div>
+
+        <button class="btn-link" onclick="registerAndLinkKey()">2. Save User & Link Key</button>
+        <p class="status-message" id="statusMessage" style="display: none;">API Key generated! Isi data di bawah & klik Save.</p>
+
+        <!-- Tombol Tambahan untuk ke Admin Login -->
+        <button class="btn-admin-panel" onclick="window.location.href='/admin_login.html'">Admin Panel</button>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:3000/users';
+        let currentApiKey = '';
+        let currentExpirationDate = null;
+
+        // Fungsi 1: Generate Key (Hanya menghasilkan Key di sisi klien/server, tanpa registrasi)
+        async function generateKey() {
+            const email = document.getElementById('email').value;
+
+            if (!email) {
+                alert('Silakan isi Email terlebih dahulu untuk generate Key.');
+                return;
+            }
+
+            try {
+                const res = await fetch(`${API_URL}/generate-key`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email })
+                });
+
+                const data = await res.json();
+
+                if (res.ok) {
+                    currentApiKey = data.api_key;
+                    currentExpirationDate = data.expired_at;
+                    document.getElementById('keyDisplay').innerText = currentApiKey;
+                    document.getElementById('statusMessage').innerText = `Key baru berhasil dibuat (berlaku s.d. ${new Date(currentExpirationDate).toLocaleDateString()}). Sekarang klik "2. Save User & Link Key".`;
+                    document.getElementById('statusMessage').style.color = '#2ecc71';
+                    document.getElementById('statusMessage').style.display = 'block';
+                    alert('Key berhasil dibuat! Lanjutkan dengan mengisi data user dan klik tombol Save.');
+                } else {
+                    document.getElementById('statusMessage').innerText = data.message || 'Gagal Generate Key. Klik "2. Save User & Link Key" jika belum terdaftar.';
+                    document.getElementById('statusMessage').style.color = '#e74c3c';
+                    document.getElementById('statusMessage').style.display = 'block';
+                    alert(data.message || 'Gagal Generate Key!');
+                }
+
+            } catch (err) {
+                alert("Gagal terhubung ke server.");
+                console.error(err);
+            }
+        }
+        
+        // Fungsi 2: Register User dan Link Key (Menggabungkan registrasi dan key generation)
+        async function registerAndLinkKey() {
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const email = document.getElementById('email').value;
+
+            if (!firstName || !lastName || !email) {
+                alert('Semua kolom data user harus diisi.');
+                return;
+            }
+
+            try {
+                // 1. Lakukan Registrasi User (Endpoint register akan berhasil atau memberi tahu jika sudah terdaftar)
+                const regRes = await fetch(`${API_URL}/register`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ first_name: firstName, last_name: lastName, email: email })
+                });
+
+                const regData = await regRes.json();
+                
+                // Cek jika registrasi sukses atau user sudah terdaftar
+                if (regRes.ok || (regData.message && regData.message.includes("sudah terdaftar"))) {
+                    
+                    // 2. Jika User sudah terdaftar, Generate Key
+                    const genRes = await fetch(`${API_URL}/generate-key`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email })
+                    });
+                    
+                    const genData = await genRes.json();
+
+                    if (genRes.ok) {
+                        currentApiKey = genData.api_key;
+                        currentExpirationDate = genData.expired_at;
+                        document.getElementById('keyDisplay').innerText = currentApiKey;
+                        document.getElementById('statusMessage').innerText = `Sukses! Key baru telah dibuat dan terhubung ke ${email}. Key berlaku hingga ${new Date(currentExpirationDate).toLocaleDateString()}.`;
+                        document.getElementById('statusMessage').style.color = '#2ecc71';
+                        alert('Akun dan Key berhasil dibuat! Silakan salin Key Anda.');
+                    } else {
+                        document.getElementById('statusMessage').innerText = genData.message || 'Gagal membuat Key setelah registrasi.';
+                        document.getElementById('statusMessage').style.color = '#e74c3c';
+                        alert(`Gagal membuat Key: ${genData.message}`);
+                    }
+                } else {
+                     document.getElementById('statusMessage').innerText = regData.message || 'Gagal Registrasi User.';
+                     document.getElementById('statusMessage').style.color = '#e74c3c';
+                     alert(`Gagal Registrasi User: ${regData.message}`);
+                }
+
+            } catch (err) {
+                alert("Gagal terhubung ke server.");
+                console.error(err);
+            }
+        }
+
+
+        function copyKey() {
+            if (document.getElementById('keyDisplay').innerText.includes('Klik "1. Generate Key"')) {
+                 alert("Silakan Generate Key terlebih dahulu.");
+                 return;
+            }
+            
+            const keyText = document.getElementById('keyDisplay').innerText;
+            
+            // Using document.execCommand for iframe compatibility
+            const el = document.createElement('textarea');
+            el.value = keyText;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+
+            alert("Key copied to clipboard! 📋");
+        }
+        
+    </script>
+</body>
+</html>

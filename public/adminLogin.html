@@ -1,0 +1,185 @@
+/* Admin Login Page */
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+    <style>
+        :root { 
+            --primary: #FF70A6; /* Main Rose Pink */
+            --secondary: #FFD9E8; /* Light Pink */
+            --bg-start: #FFE4E6; 
+            --bg-end: #FBE5C5; 
+            --card-bg: #FFFFFF;
+            --text-dark: #6B4958;
+            --accent-blue: #A2D2FF;
+            --shadow-light: 8px 8px 15px #FFD9E8, -8px -8px 15px #FFFFFF;
+        }
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background: linear-gradient(135deg, var(--bg-start) 0%, var(--bg-end) 100%);
+            margin: 0; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            color: var(--text-dark);
+            font-weight: 300;
+        }
+        .card { 
+            background: var(--card-bg); 
+            padding: 40px; 
+            border-radius: 40px; /* Chubby */
+            box-shadow: 0 15px 35px rgba(107, 73, 88, 0.3), var(--shadow-light); 
+            width: 380px; 
+            text-align: center; 
+            border: 1px solid var(--secondary);
+            transition: 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 18px 40px rgba(107, 73, 88, 0.4), var(--shadow-light);
+        }
+        h2 { 
+            color: var(--primary); 
+            margin-bottom: 5px; 
+            font-weight: 800; 
+            font-size: 2em;
+            text-shadow: 1px 1px 2px var(--secondary);
+        }
+        p { 
+            color: #A0A0A0; 
+            margin-bottom: 30px; 
+            font-weight: 300;
+        }
+        .input-group { 
+            position: relative; 
+            margin-bottom: 20px; 
+        }
+        .input-group i { 
+            position: absolute; 
+            left: 20px; /* Lebih ke dalam */
+            top: 50%; 
+            transform: translateY(-50%); 
+            color: var(--primary); 
+            font-size: 1.1em;
+            transition: 0.3s;
+        }
+        input { 
+            width: 100%; 
+            padding: 15px 20px 15px 50px; /* Lebih chubby */
+            border: none; 
+            background: #FFF5F5; 
+            border-radius: 25px; /* Lebih bulat */
+            box-sizing: border-box; 
+            font-size: 0.95em; 
+            outline: none; 
+            transition: box-shadow 0.3s; 
+            color: var(--text-dark);
+            box-shadow: inset 3px 3px 6px rgba(0,0,0,0.1), inset -3px -3px 6px var(--card-bg); 
+        }
+        input:focus { 
+            box-shadow: inset 1px 1px 3px rgba(0,0,0,0.1), 0 0 0 4px var(--accent-blue); 
+        }
+        .btn-submit { 
+            width: 100%; 
+            padding: 18px; /* Lebih tebal */
+            background: var(--primary); 
+            color: white; 
+            border: none; 
+            border-radius: 20px; 
+            font-weight: 700; 
+            cursor: pointer; 
+            transition: 0.2s transform; 
+            box-shadow: 0 5px 0 0 rgba(107, 73, 88, 0.4);
+            text-transform: uppercase;
+        }
+        .btn-submit:active {
+            transform: translateY(5px);
+            box-shadow: none;
+        }
+        .link { 
+            margin-top: 25px; 
+            font-size: 0.9em; 
+        }
+        .link a { 
+            color: var(--primary); 
+            text-decoration: none; 
+            font-weight: 600; 
+            transition: 0.3s;
+        }
+        .link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h2>Admin Login</h2>
+        <p>Silakan login untuk mengakses dashboard.</p>
+
+        <div class="input-group">
+            <i class="ri-mail-line"></i>
+            <input type="email" id="email" placeholder="Admin Email">
+        </div>
+
+        <div class="input-group">
+            <i class="ri-lock-line"></i>
+            <input type="password" id="password" placeholder="Admin Password">
+        </div>
+
+        <button class="btn-submit" onclick="handleLogin()">Login Admin</button>
+
+        <div class="link">
+            Belum punya akun? <a href="/adminRegistrasi.html">Buat akun admin</a>
+        </div>
+    </div>
+
+    <script>
+        const ADMIN_API_URL = 'http://localhost:3000/admin';
+
+        // Cek apakah sudah login, jika ya, alihkan ke dashboard
+        if (localStorage.getItem('adminToken')) {
+             window.location.href = '/dashboardAdmin.html';
+        }
+
+        async function handleLogin() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            if (!email || !password) {
+                alert('Email dan Password harus diisi.');
+                return;
+            }
+
+            try {
+                const res = await fetch(`${ADMIN_API_URL}/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await res.json();
+
+
+                if (res.ok) {
+                    localStorage.setItem('adminToken', data.token);
+                    alert("Login Berhasil!");
+                    window.location.href = '/dashboardAdmin.html'; 
+                } else {
+                    alert(data.message || "Login Gagal!");
+                }
+
+            } catch (err) {
+                alert("Gagal terhubung ke server.");
+                console.error(err);
+            }
+        }
+    </script>
+</body>
+</html>

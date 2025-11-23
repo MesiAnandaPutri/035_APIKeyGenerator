@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+    <style>
+        :root { 
+            --primary: #FF70A6; /* Main Rose Pink */
+            --secondary: #FFD9E8; /* Light Pink for background elements */
+            --accent-glow: #F9A4C6; 
+            --accent-green: #59C999; /* Green yang lebih soft */
+            --accent-red: #FA8072; /* Salmon Red */
+            --bg-start: #FFE4E6; 
+            --bg-end: #FBE5C5; 
+            --card-bg: #FFFFFF;
+            --text-dark: #6B4958;
+            --header-text: #4A4E69; 
+            --shadow-light: 4px 4px 8px #FFD9E8, -4px -4px 8px #FFFFFF;
+            --shadow-inset: inset 2px 2px 5px rgba(0,0,0,0.1), inset -2px -2px 5px var(--card-bg);
+        }
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background: linear-gradient(135deg, var(--bg-start) 0%, var(--bg-end) 100%); 
+            margin: 0; 
+            padding: 40px; 
+            color: var(--text-dark);
+            font-weight: 300;
+        }
+        .container { 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            background: var(--card-bg);
+            border-radius: 40px; /* Chubby */
+            box-shadow: 0 20px 50px rgba(107, 73, 88, 0.2), var(--shadow-light);
+            padding: 40px;
+            border: 1px solid var(--secondary);
+        }
+        .header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 40px; 
+            border-bottom: 3px solid var(--primary);
+            padding-bottom: 20px;
+        }
+        h1 { 
+            color: var(--header-text); 
+            font-weight: 800; 
+            margin: 0; 
+            font-size: 2.5em; /* Lebih besar */
+            text-shadow: 1px 1px 2px var(--secondary);
+        }
+        .btn-logout { 
+            padding: 10px 25px; 
+            background: var(--accent-red); 
+            color: white; 
+            border: none; 
+            border-radius: 20px; /* Lebih bulat */
+            font-weight: 700; 
+            cursor: pointer; 
+            transition: 0.2s transform; 
+            box-shadow: 0 4px 0 0 #D46A6A; /* 3D effect */
+        }
+        .btn-logout:active {
+            transform: translateY(4px);
+            box-shadow: none;
+        }
+        .section { 
+            margin-bottom: 50px; 
+        }
+        h2 { 
+            color: var(--primary); 
+            font-size: 1.8em; 
+            margin-bottom: 20px; 
+            font-weight: 700;
+        }
+        .table-wrapper { 
+            background: #fdfdfd; 
+            border-radius: 25px; /* Chubby tables */
+            box-shadow: 10px 10px 20px rgba(107, 73, 88, 0.1), -5px -5px 10px #FFFFFF; /* Neumorphic Outer Shadow */
+            border: 1px solid var(--secondary);
+            overflow-x: auto;
+        }
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+        }
+        th { 
+            text-align: left; 
+            padding: 18px 15px; /* Lebih tebal */
+            color: var(--header-text); 
+            font-weight: 700; 
+            border-bottom: 2px solid var(--primary); 
+            background: var(--secondary); /* Warna header soft */
+            font-size: 1em;
+        }
+        td { 
+            padding: 15px; 
+            border-bottom: 1px solid var(--secondary); 
+            vertical-align: middle; 
+            font-size: 0.9em;
+        }
+        tr:hover { 
+            background: rgba(255, 112, 166, 0.1); 
+        }
+        
+        /* Status Badges - Rounded & Raised */
+        .status { 
+            padding: 8px 15px; 
+            border-radius: 20px; 
+            font-size: 0.75em; 
+            font-weight: 700; 
+            text-transform: uppercase;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+        }
+        .status.active { 
+            background: #E8F5E9; 
+            color: var(--accent-green); 
+        }
+        .status.inactive { 
+            background: #FFE0E6; 
+            color: var(--accent-red); 
+        }
+        
+        /* Action Buttons - Chubby and 3D */
+        .btn-action { 
+            border: none; 
+            padding: 8px 15px; 
+            border-radius: 15px; 
+            cursor: pointer; 
+            font-size: 0.8em; 
+            font-weight: 600; 
+            transition: 0.2s transform; 
+            box-shadow: 0 3px 0 0 rgba(0,0,0,0.2);
+        }
+        .btn-action:active {
+            transform: translateY(3px);
+            box-shadow: none;
+        }
+        .btn-deactivate { 
+            background: #FFE0E6; 
+            color: var(--accent-red); 
+        }
+        .btn-activate { 
+            background: #E8F5E9; 
+            color: var(--accent-green); 
+        }
+        code {
+            font-size: 0.8em !important;
+            background: var(--secondary);
+            padding: 4px 8px;
+            border-radius: 8px;
+            color: var(--header-text);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h1>Admin Dashboard</h1>
+            <button class="btn-logout" onclick="logout()">Logout</button>
+        </div>
+
+        <div class="section">
+            <h2>User List</h2>
+            <div class="table-wrapper">
+                <table id="userTable">
+                    <thead></thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>API Key List</h2>
+            <div class="table-wrapper">
+                <table id="keyTable">
+                    <thead></thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const ADMIN_API_URL = 'http://localhost:3000/admin';
+        let TOKEN = localStorage.getItem('adminToken');
+
+        // Pengecekan Token saat memuat halaman
+        if (!TOKEN) {
+            window.location.href = '/adminLogin.html';
+        } else {
+            loadAllData();
+        }
+        
+        function logout() {
+            localStorage.removeItem('adminToken');
+            alert('Logout Berhasil!');
+            window.location.href = '/adminLogin.html'; 
+        }
+
+        async function fetchProtected(endpoint) {
+            try {
+                const res = await fetch(`${ADMIN_API_URL}${endpoint}`, {
+                    headers: { 'Authorization': 'Bearer ' + TOKEN }
+                });
+                if (res.status === 401 || res.status === 400) {
+                    alert('Sesi habis atau Token Invalid. Silakan login ulang.');
+                    logout();
+                    return null;
+                }
+                if (!res.ok) throw new Error('Fetch failed');
+                return res.json();
+            } catch (err) {
+                console.error("Error fetching data:", err);
+                return null;
+            }
+        }
+
+        async function loadAllData() {
+            const userData = await fetchProtected('/users');
+            const keyData = await fetchProtected('/keys');
+
+            if (userData) renderUserTable(userData.data);
+            if (keyData) renderKeyTable(keyData.data);
+        }
+
+        function renderUserTable(users) {
+            const thead = document.querySelector('#userTable thead');
+            const tbody = document.querySelector('#userTable tbody');
+            
+            thead.innerHTML = `<tr><th>ID</th><th>First Name</th><th>Last Name</th><th>Email</th><th>Created At</th></tr>`;
+            tbody.innerHTML = '';
+            
+            users.forEach(user => {
+                const createdAt = new Date(user.createdAt).toLocaleDateString('id-ID');
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${user.id}</td>
+                        <td>${user.first_name}</td>
+                        <td>${user.last_name}</td>
+                        <td>${user.email}</td>
+                        <td>${createdAt}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        function renderKeyTable(keys) {
+            const thead = document.querySelector('#keyTable thead');
+            const tbody = document.querySelector('#keyTable tbody');
+
+            thead.innerHTML = `<tr><th>API Key ID</th><th>API Key</th><th>Status</th><th>User ID</th><th>User Email</th><th>Expires At</th><th>Action</th></tr>`;
+            tbody.innerHTML = '';
+
+            keys.forEach(k => {
+                const isInactive = k.status === 'inactive';
+                const statusHtml = `<span class="status ${isInactive ? 'inactive' : 'active'}">${k.status}</span>`;
+                const expiresAt = new Date(k.last_date).toLocaleDateString('id-ID');
+
+                // Tombol aksi
+                const btnHtml = isInactive 
+                    ? `<button class="btn-action btn-activate" onclick="updateKeyStatus(${k.id}, 'active')">Activate</button>`
+                    : `<button class="btn-action btn-deactivate" onclick="updateKeyStatus(${k.id}, 'inactive')">Deactivate</button>`;
+
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${k.id}</td>
+                        <td><code style="font-size: 0.75em; color: #555;">${k.key.substring(0, 20)}...</code></td>
+                        <td>${statusHtml}</td>
+                        <td>${k.user_id}</td>
+                        <td>${k.user ? k.user.email : 'N/A'}</td>
+                        <td>${expiresAt}</td>
+                        <td>${btnHtml}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        async function updateKeyStatus(id, newStatus) {
+            if(!confirm(`Apakah Anda yakin ingin mengubah status Key ID ${id} menjadi ${newStatus}?`)) return;
+            
+            try {
+                const res = await fetch(`${ADMIN_API_URL}/keys/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + TOKEN },
+                    body: JSON.stringify({ status: newStatus })
+                });
+
+                const data = await res.json();
+                
+                if(res.ok) {
+                    alert(data.message);
+                    loadAllData(); // Refresh data
+                } else {
+                    alert(data.message || 'Gagal mengubah status key.');
+                }
+            } catch (err) { 
+                alert("Gagal terhubung ke server.");
+                console.error(err);
+            }
+        }
+    </script>
+</body>
+</html>
